@@ -1,0 +1,34 @@
+{
+  "name": "sms-management-application-api",
+  "version": "1.0.0",
+  "description": "This is an sms management application",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon index.js --exec babel-node --presets babel-preset-env",
+    "start": "babel-node --presets babel-preset-env index.js",
+    "test": "yarn test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/me-x-mi/sms-management-application-api.git"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "api"
+  ],
+  "author": "Ezrqn Kemboi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/me-x-mi/sms-management-application-api/issues"
+  },
+  "homepage": "https://github.com/me-x-mi/sms-management-application-api#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.0.6",
+    "babel-preset-env": "^1.7.0",
+    "express": "^4.17.1",
+    "nodemon": "^1.19.1"
+  }
+}
