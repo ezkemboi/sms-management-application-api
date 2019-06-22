@@ -4,9 +4,9 @@
   "description": "This is an sms management application",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon src/index.js --exec babel-node --presets babel-preset-env",
-    "start": "babel-node --presets babel-preset-env src/index.js",
-    "test": "yarn test"
+    "start:dev": "nodemon --exec babel-node src/index.js",
+    "start": "babel-node src/index.js",
+    "test": "nyc --reporter=text mocha --exit --require @babel/register --require @babel/polyfill ./tests/*"
   },
   "repository": {
     "type": "git",
@@ -26,13 +26,20 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "pg": "^7.11.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^8.0.6",
-    "babel-preset-env": "^1.7.0",
-    "nodemon": "^1.19.1"
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1"
   }
 }

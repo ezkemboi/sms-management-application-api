@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import { client, pool } from './database/config';
 
 const app = express();
 const port = 8000;
@@ -60,8 +61,26 @@ app.post('/sms', (req, res) => {
             status
         }
     })
+});
+
+// Get all messages
+app.get('/sms', async (req, res) => {
+    // Fetch all sms in the database
+    // const sms = await sms.findAll();
+    res.status(200).send({
+        "Message": "Sms retrieved successlly"
+    })
 })
 
+
+// Run client for db connection
+client.connect().then(() => {
+    console.log("Database connection created successfully.")
+}).catch(err => {
+    console.log('Error while connecting to db', err)
+})
+
+// App listen
 app.listen(port, hostname, () => {
     console.log(`Listneing to ${hostname}/${port}`)
 });
