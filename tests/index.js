@@ -16,6 +16,15 @@ describe('Start app', () => {
             });
     });
 
+    it('should get all sms send in the system', (done) => {
+        chai.request(app)
+            .get('/sms')
+            .end((err, res) => {
+                res.should.have.status(200);
+                done();
+            })
+    })
+
     it('should post an sms /sms', (done) => {
         const smsData = {
             sender: 'Ezrqn Kemboi',
@@ -33,6 +42,15 @@ describe('Start app', () => {
             });
     });
 
+    it('should get all contact list', (done) => {
+        chai.request(app)
+            .get('/contact')
+            .end((err, res) => {
+                res.should.have.status(200);
+                done();
+            })
+    })
+
     it('should create an contact', (done) => {
         const contactData = {
             name: 'Ezrqn Kemboi',
@@ -48,7 +66,7 @@ describe('Start app', () => {
             })
     });
 
-    it('should return 400 error when phon number is blnk', (done) => {
+    it('should return 400 error when phone number is blnk', (done) => {
         const contactDataWithoutName = {
             phoneNumber: '+1294479083339'
         }
@@ -61,13 +79,4 @@ describe('Start app', () => {
                 done();
             });
     });
-
-    it('should get all sms send in the system', (done) => {
-        chai.request(app)
-            .get('/sms')
-            .end((err, res) => {
-                res.should.have.status(200);
-                done();
-            })
-    })
 });
