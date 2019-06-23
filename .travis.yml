@@ -5,7 +5,10 @@ node_js:
   - "10"
 
 before_script:
+  - psql -c 'CREATE DATABASE travis;' -U postgres
   - psql -c 'CREATE DATABASE test;' -U postgres
+  - npm run drop
+  - npm run create
 
 script:
   - npm test

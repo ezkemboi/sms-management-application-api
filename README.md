@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/me-x-mi/sms-management-application-api.svg?branch=master)](https://travis-ci.org/me-x-mi/sms-management-application-api)
+[![Build Status](https://travis-ci.org/ezrqnkemboi/sms-management-application-api.svg?branch=master)](https://travis-ci.org/ezrqnkemboi/sms-management-application-api)
 [![Coverage Status](https://coveralls.io/repos/github/me-x-mi/sms-management-application-api/badge.svg?branch=master)](https://coveralls.io/github/me-x-mi/sms-management-application-api?branch=master)
 
 # SMS Managament Application API

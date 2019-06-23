@@ -52,6 +52,20 @@ describe('Start app', () => {
             })
     });
 
+    it('should return 400 error when all there are some missing fields', (done) => {
+        const smsWithoutOnlySender = {
+            sender: '+1294479083339'
+        }
+        chai.request(app)
+            .post('/sms')
+            .set('content-type', 'application/json')
+            .send(smsWithoutOnlySender)
+            .end((err, res) => {
+                res.should.have.status(400);
+                done();
+            });
+    });
+
     it('should post an sms /sms', (done) => {
         chai.request(app)
             .post('/sms')
@@ -83,11 +97,10 @@ describe('Start app', () => {
         chai.request(app)
             .get('/contacts')
             .end((err, res) => {
-                // Need change/fix
-                res.should.have.status(404);
+                res.should.have.status(200);
                 done();
             })
-    })
+    });
 
     it('should create an contact', (done) => {
         chai.request(app)

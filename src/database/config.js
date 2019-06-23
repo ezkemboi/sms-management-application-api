@@ -18,7 +18,7 @@ pool.on('connect', () => {
 });
 
 // Creating tables function
-export const createTables = () => {
+export const createTables = async () => {
     const smsTable = `CREATE TABLE IF NOT EXISTS
         sms(
             id SERIAL PRIMARY KEY,
@@ -29,13 +29,8 @@ export const createTables = () => {
             created_date TIMESTAMP
         )
     `;
-    pool.query(smsTable)
-        .then(res => {
-            pool.end();
-        })
-        .catch(err => {
-            pool.end();
-        });
+
+    await pool.query(smsTable);
 
     const contactTable = `CREATE TABLE IF NOT EXISTS 
         contacts(
@@ -45,37 +40,19 @@ export const createTables = () => {
             created_date TIMESTAMP
         )
     `;
-    pool.query(contactTable)
-        .then(res => {
-            pool.end();
-        })
-        .catch(err => {
-            pool.end();
-        });
+    await pool.query(contactTable);
 };
 
 // Dropping tables already creating
-export const dropTables = () => {
+export const dropTables = async () => {
     const dropSmsTable = 'DROP TABLE IF EXISTS sms'
     const dropContactsTable = 'DROP TABLE IF EXISTS contacts'
 
     // Drop the table sms
-    pool.query(dropSmsTable)
-        .then(res => {
-            pool.end();
-        })
-        .catch(err => {
-            pool.end();
-        });
+    await pool.query(dropSmsTable);
 
     // Drop the table contacts 
-    pool.query(dropContactsTable)
-        .then(res => {
-            pool.end();
-        })
-        .catch(err => {
-            pool.end();
-        })
+    await pool.query(dropContactsTable);
 };
 
 pool.on('remove', () => {
@@ -84,4 +61,3 @@ pool.on('remove', () => {
 
 // To create and drop tables
 require('make-runnable');
-
