@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/me-x-mi/sms-management-application-api.svg?branch=master)](https://travis-ci.org/me-x-mi/sms-management-application-api)
 [![Coverage Status](https://coveralls.io/repos/github/me-x-mi/sms-management-application-api/badge.svg?branch=master)](https://coveralls.io/github/me-x-mi/sms-management-application-api?branch=master)
+
 # SMS Managament Application API
 Create an SMS management API using the framework of your choice that will model the following abstractions:
 
@@ -36,9 +37,12 @@ NB: `This app does not use any ORM`
 - Change directory: `cd sms-management-application-api`
 - Install dependancies: `npm install`
 - Set up `.env` file using the example `.env.example`
+- Create tables `npm run create`
 - Run development: `npm run start:dev`
 - Run tests: `npm test`
 
+NB: To drop any tables previous created use `npm run drop`
+    To run production version `npm run start:prod`
 
 ## Contributor
 Ezrqn Kemboi
