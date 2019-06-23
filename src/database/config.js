@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const databaseUrl = process.env.DATABASE_URL;
+const env = process.env.NODE_ENV
+
+const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
 
 // Creating a new pool instance
 export const pool = new Pool({
@@ -39,7 +41,7 @@ export const createTables = () => {
         contacts(
             id SERIAL PRIMARY KEY,
             name VARCHAR(128) NOT NULL,
-            phone_number INT NOT NULL,
+            phone_number VARCHAR NOT NULL,
             created_date TIMESTAMP
         )
     `;

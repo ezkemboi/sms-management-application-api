@@ -1,7 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import { pool } from './database/config';
+import moment from 'moment';
+import db from './database/query';
 
 const app = express();
 const port = 8000;
@@ -25,20 +26,27 @@ app.get('/', (req, res) => {
  * Name, phone number
  */
 
-app.get('/contact', (req, res) => {
-    const contactQuery = pool.query('SELECT * FROM contacts', (err, res) => {
-        if (err) {
-            console.log('----err is ----', err.stack)
-        } else {
-            console.log('--------data sucess--', res.rows[0])
+app.get('/contacts', async (req, res) => {
+    // Selecting user's contacts from table contacts
+    const data = 'SELECT * FROM contacts';
+    try {
+        const { rows, rowCount } = await db.query(data);
+        if (rows.length < 1 || rowCount < 1) {
+            return res.status(404).send({
+                "message": "There are no contacts that exist at the moment"
+            });
         }
-    });
-    res.status(200).send({
-        "message": "Sms retrieved successfully."
-    });
+        return res.status(200).send({
+            "message": "Contacts retrieved successfully.",
+            "contacts": rows,
+            "totalCount": rowCount
+        });
+    } catch (err) {
+        return res.status(400).send(err)
+    }
 });
 
-app.post('/contact', async (req, res) => {
+app.post('/contacts', async (req, res) => {
     const { name, phoneNumber } = req.body;
     // Validate user
     if (!name || !phoneNumber) {
@@ -48,24 +56,19 @@ app.post('/contact', async (req, res) => {
     };
 
     // Try inserting data into the database
-    const data = 'INSERT INTO contacts(name, phoneNumber) VALUES($1, $2) RETURNING *';
-    const values = [name, phoneNumber];
-
+    const data = `INSERT INTO contacts(name, phone_number, created_date) 
+                    VALUES($1, $2, $3) RETURNING *`;
+    const values = [name, phoneNumber, moment(new Date())];
     // Async await (try/catch)
     try {
-        const res = await pool.query(data, values);
-        console.log('---data--->>>>', res.rows[0]);
+        const { rows } = await db.query(data, values);
+        return res.status(201).send({
+            "messge": "Contact created successfully",
+            "user": rows[0]
+        });
     } catch (err) {
-        console.log('---err while inserting -----', err.stack);
+        return res.status(400).send(err)
     }
-
-    res.status(201).send({
-        "messge": "User created successfully",
-        "user": {
-            name,
-            phoneNumber
-        }
-    });
 });
 
 /**
@@ -79,37 +82,46 @@ app.post('/contact', async (req, res) => {
 // Get all messages
 app.get('/sms', async (req, res) => {
     // Fetch all sms in the database
-    // const sms = await sms.findAll();
-    const smsQuery = pool.query('SELECT * FROM sms', (err, res) => {
-        if (err) {
-            console.log('----err is ----', err.stack)
-        } else {
-            console.log('--------data sucess--', res.rows[0])
+    const data = 'SELECT * FROM sms';
+
+    try {
+        const { rows, rowCount } = await db.query(data);
+        if (rows.length < 1 || rowCount < 1) {
+            return res.status(404).send({
+                "Message": "There no sms at the moment"
+            });
         }
-    });
-    res.status(200).send({
-        "Message": "Sms retrieved successlly"
-    });
+        return res.status(200).send({
+            "Message": "All sms retrieved successfully",
+            "sms": rows,
+            "smsCount": rowCount
+        })
+    } catch (err) {
+        return res.status(400).send(err)
+    }
 });
 
-app.post('/sms', (req, res) => {
+app.post('/sms', async (req, res) => {
     const { sender, receiver, message, status } = req.body;
-    res.status(201).send({
-        "Message": "Send createad successfully",
-        "sms": {
-            sender,
-            receiver,
-            message,
-            status
-        }
-    });
-});
+    if (!sender || !receiver || !message || !status) {
+        res.status(400).send({
+            "message": "Sender, receiver, message and status required"
+        });
+    };
+    const data = `INSERT INTO sms(sender, receiver, message, status, created_date) 
+                    VALUES($1, $2, $3, $4, $5) RETURNING *`
+    // Values to insert into db
+    const values = [sender, receiver, message, status, moment(new Date())]
 
-// Run client for db connection
-pool.connect().then(() => {
-    console.log("Database connection created successfully.")
-}).catch(err => {
-    console.log('Error while connecting to db', err)
+    try {
+        const { rows } = await db.query(data, values);
+        return res.status(201).send({
+            "Message": "Send createad successfully",
+            "sms": rows[0]
+        });
+    } catch (err) {
+        return res.status(400).send(err)
+    }
 });
 
 // App listen

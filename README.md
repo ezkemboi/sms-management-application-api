@@ -42,6 +42,7 @@ NB: `This app does not use any ORM`
 - Run tests: `npm test`
 
 NB: To drop any tables previous created use `npm run drop`
+    To run production version `npm run start:prod`
 
 ## Contributor
 Ezrqn Kemboi
