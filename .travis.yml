@@ -5,11 +5,10 @@ node_js:
   - "10"
 
 before_script:
-  - npm install coveralls
   - psql -c 'CREATE DATABASE test;' -U postgres
 
 script:
   - npm test
 
 after_script:
-  - COVERALLS_REPO_TOKEN=$coveralls_repo_token npm run coveralls
+  - npm install coveralls && npm run coverage

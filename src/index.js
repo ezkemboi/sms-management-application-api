@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({
 app.use(cors())
 
 app.get('/', (req, res) => {
-    res.status(200).send({ "message": "Welcome to NodeJS" })
+    res.status(200).send({ "message": "Welcome to SMS managament application." });
 });
 
 /**
@@ -60,7 +60,7 @@ app.post('/sms', (req, res) => {
             message,
             status
         }
-    })
+    });
 });
 
 // Get all messages
@@ -70,7 +70,7 @@ app.get('/sms', async (req, res) => {
     res.status(200).send({
         "Message": "Sms retrieved successlly"
     })
-})
+});
 
 
 // Run client for db connection
@@ -84,3 +84,5 @@ client.connect().then(() => {
 app.listen(port, hostname, () => {
     console.log(`Listneing to ${hostname}/${port}`)
 });
+
+export default app;
