@@ -2,6 +2,8 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import moment from 'moment';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger.json';
 import db from './database/query';
 
 const app = express();
@@ -15,7 +17,10 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 // Set up cross origin
-app.use(cors())
+app.use(cors());
+
+// Get Swagger API documentation
+app.use("/api-documentation", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req, res) => {
     res.status(200).send({ "message": "Welcome to SMS managament application." });

@@ -33,7 +33,8 @@
     "express": "^4.17.1",
     "make-runnable": "^1.3.6",
     "moment": "^2.24.0",
-    "pg": "^7.11.0"
+    "pg": "^7.11.0",
+    "swagger-ui-express": "^4.0.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",

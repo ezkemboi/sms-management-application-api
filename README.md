@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/me-x-mi/sms-management-application-api/badge.svg?branch=master)](https://coveralls.io/github/me-x-mi/sms-management-application-api?branch=master)
 
 # SMS Managament Application API
-Create an SMS management API using the framework of your choice that will model the following abstractions:
+SMS managment API system that ensure that people can send or receive messages.
 
 # Frameworks and Tools
 
@@ -39,6 +39,7 @@ NB: `This app does not use any ORM`
 - Set up `.env` file using the example `.env.example`
 - Create tables `npm run create`
 - Run development: `npm run start:dev`
+- Documentation served on: `/api-documentation`
 - Run tests: `npm test`
 
 NB: To drop any tables previous created use `npm run drop`
