@@ -4,6 +4,9 @@ language:
 node_js:
   - "10"
 
+before_install:
+  - sudo apt-get install postgresql-9.5
+
 before_script:
   - psql -c 'CREATE DATABASE travis;' -U postgres
   - psql -c 'CREATE DATABASE test;' -U postgres

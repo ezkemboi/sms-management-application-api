@@ -16,10 +16,6 @@
   "basePath": "/",
   "tags": [
     {
-      "name": "Users",
-      "description": "Users Management"
-    },
-    {
       "name": "Messages",
       "description": "Messages Management"
     },
@@ -93,15 +89,6 @@
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "description": "An authorization token",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "successful operation",
@@ -115,82 +102,42 @@
         }
       }
     },
-    "/user/signup": {
-      "post": {
+    "/contacts/{id}": {
+      "delete": {
         "tags": [
-          "Users"
+          "Contacts"
         ],
-        "summary": "Create new user",
-        "description": "Add new user to the DB",
-        "operationId": "signupUser",
-        "consumes": [
-          "application/json"
-        ],
+        "summary": "Delete Contact",
+        "description": "Delete Single Contact with all messages related to it",
+        "operationId": "deleteContact",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "in": "body",
-            "name": "body",
-            "description": "New User Object",
+            "in": "path",
+            "name": "id",
+            "description": "ID of the contact to be deleted",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/Users"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Account was created successfully"
-          },
-          "400": {
-            "description": "Invalid input"
-          }
-        }
-      }
-    },
-    "/user/signin": {
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Signin into an existing account",
-        "description": "Signin into an existing account",
-        "operationId": "signinUser",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Signin into an existing Account",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Users"
-            }
+            "type": "integer"
           }
         ],
         "responses": {
           "200": {
-            "description": "Signed in successfully"
+            "description": "Deleted contacts and sms related to them successfully"
           },
-          "400": {
-            "description": "Inccorrect credentials"
+          "404": {
+            "description": "Invalid id supplied"
           }
         }
       }
     },
-    "/messages": {
+    "/sms": {
       "post": {
         "tags": [
-          "Messages"
+          "Sms"
         ],
-        "summary": "Send new Message",
+        "summary": "Send new sms message",
         "description": "Add new sms to the DB",
         "operationId": "sendNewMessage",
         "consumes": [
@@ -200,20 +147,6 @@
           "application/json"
         ],
         "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "description": "An authorization token",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "description": "An authorization token",
-            "required": true,
-            "type": "string"
-          },
           {
             "in": "body",
             "name": "body",
@@ -227,34 +160,22 @@
         "responses": {
           "201": {
             "description": "Message was sent successfully"
-          },
-          "400": {
-            "description": "You must be logged in to perform this action"
           }
         }
       },
       "get": {
         "tags": [
-          "Messages"
+          "Sms"
         ],
-        "summary": "Get All Messages",
+        "summary": "Get All sms Messages",
         "description": "Get all messages regardless of the sender",
         "operationId": "getAll",
         "produces": [
           "application/json"
         ],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "description": "An authorization token",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
-            "description": "successful operation",
+            "description": "All sms retrieved successfully",
             "schema": {
               "type": "array",
               "items": {
@@ -264,263 +185,17 @@
           }
         }
       }
-    },
-    "/messages/:id": {
-      "get": {
-        "tags": [
-          "Messages"
-        ],
-        "summary": "Get Single Message",
-        "description": "",
-        "operationId": "getOne",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "description": "An authorization token",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "id of the message to retrieve ",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/SMS"
-            }
-          },
-          "400": {
-            "description": "Invalid id supplied"
-          },
-          "404": {
-            "description": "Message not found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Messages"
-        ],
-        "summary": "Update Message",
-        "description": "Update a message",
-        "operationId": "updateMessage",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "description": "An authorization token",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the message to be updated",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "operation successful"
-          },
-          "404": {
-            "description": "Message was not found"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Messages"
-        ],
-        "summary": "Delete Message",
-        "description": "Delete Single Message",
-        "operationId": "deleteMessage",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "description": "An authorization token",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the message to be deleted",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "operation successful"
-          },
-          "404": {
-            "description": "Invalid id supplied"
-          }
-        }
-      }
-    },
-    "/contacts/:id": {
-      "get": {
-        "tags": [
-          "Contacts"
-        ],
-        "summary": "Get single Contact",
-        "description": "",
-        "operationId": "getSingleContact",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "description": "An authorization token",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "id of the contact to retrieve ",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Contact"
-            }
-          },
-          "400": {
-            "description": "Invalid id supplied"
-          },
-          "404": {
-            "description": "Contact not found"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Contacts"
-        ],
-        "summary": "Update Contact",
-        "description": "Update Single Contact",
-        "operationId": "updateContact",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "description": "An authorization token",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the contadct to be deleted",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "operation successful"
-          },
-          "404": {
-            "description": "Invalid id supplied"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Contacts"
-        ],
-        "summary": "Delete Contact",
-        "description": "Delete Single Contact with all messages related to it",
-        "operationId": "deleteContact",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "description": "An authorization token",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of the contadct to be deleted",
-            "required": true,
-            "type": "integer"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "operation successful"
-          },
-          "404": {
-            "description": "Invalid id supplied"
-          }
-        }
-      }
     }
   },
   "definitions": {
-    "Users": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "phone": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "confirmPassword": {
-          "type": "string"
-        }
-      }
-    },
     "SMS": {
       "type": "object",
       "properties": {
-        "sender": {
-          "type": "string"
+        "senderId": {
+          "type": "integer"
         },
-        "receiver": {
-          "type": "string"
+        "receiverId": {
+          "type": "integer"
         },
         "message": {
           "type": "string"

@@ -1,7 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src';
-import db from '../src/database/query';
 
 // Set chai to use chaiHttp for server
 chai.should();
@@ -43,7 +42,7 @@ describe('Start app', () => {
             })
     });
 
-    it('should create an contact', (done) => {
+    it('should create a contact', (done) => {
         chai.request(app)
             .post('/contacts')
             .set('content-type', 'application/json')
@@ -86,16 +85,6 @@ describe('Start app', () => {
             })
     });
 
-    // it('should return all sms created', async (done) => {
-    //     await createContacts();
-    //     chai.request(app)
-    //         .get('/sms')
-    //         .end((err, res) => {
-    //             res.should.have.status(200);
-    //             done();
-    //         })
-    // });
-
     it('should return 400 error when all there are some missing fields', (done) => {
         const smsWithoutOnlySender = {
             sender: '+1294479083339'
@@ -111,27 +100,10 @@ describe('Start app', () => {
     });
 
     it('should post an sms /sms', (done) => {
-        // Create sender contacts
-        chai.request(app)
-            .post('/contacts')
-            .set('content-type', 'application/json')
-            .send(senderData).end((err, res) => {
-                res.should.have.status(201);
-                done();
-            });
-        // Create receiver contacts
-        chai.request(app)
-            .post('/contacts')
-            .set('content-type', 'application/json')
-            .send(receiverData).end((err, res) => {
-                res.should.have.status(201);
-                done();
-            });
-
         // Pass data for sms creations
         const smsData = {
-            sender_id: 1,
-            receiver_id: 3,
+            senderId: 1,
+            receiverId: 2,
             message: 'Thank you for taking time for reviewing my work',
             status: 'sending'
         };
@@ -143,6 +115,26 @@ describe('Start app', () => {
             .send(smsData)
             .end((err, res) => {
                 res.should.have.status(201);
+                done();
+            });
+    });
+
+    it('should return all sms created', (done) => {
+        chai.request(app)
+            .get('/sms')
+            .end((err, res) => {
+                res.should.have.status(200);
+                done();
+            })
+    });
+
+    it('should delete a contact', (done) => {
+        chai.request(app)
+            .delete("/contacts/1")
+            .set('content-type', 'application/json')
+            .send(senderData)
+            .end((err, res) => {
+                res.should.have.status(200);
                 done();
             });
     });

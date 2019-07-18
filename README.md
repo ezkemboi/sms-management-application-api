@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/ezrqnkemboi/sms-management-application-api.svg?branch=master)](https://travis-ci.org/ezrqnkemboi/sms-management-application-api)
-[![Coverage Status](https://coveralls.io/repos/github/me-x-mi/sms-management-application-api/badge.svg?branch=master)](https://coveralls.io/github/me-x-mi/sms-management-application-api?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/ezrqnkemboi/sms-management-application-api/badge.svg?branch=master)](https://coveralls.io/github/ezrqnkemboi/sms-management-application-api?branch=master)
 
 # SMS Managament Application API
 SMS managment API system that ensure that people can send or receive messages.
@@ -39,7 +39,7 @@ NB: `This app does not use any ORM`
 - Set up `.env` file using the example `.env.example`
 - Create tables `npm run create`
 - Run development: `npm run start:dev`
-- Documentation served on: `/api-documentation`
+- Documentation served on: `http://localhost:8000/api-documentation/`
 - Run tests: `npm test`
 
 NB: To drop any tables previous created use `npm run drop`

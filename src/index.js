@@ -115,7 +115,7 @@ app.post('/sms', async (req, res) => {
     try {
         const { rows } = await db.query(data, values);
         return res.status(201).send({
-            "Message": "Send createad successfully",
+            "Message": "Message was sent successfully",
             "sms": rows[0]
         });
     } catch (err) {
@@ -147,7 +147,7 @@ app.get('/sms', async (req, res) => {
 
 // App running on
 app.listen(port, hostname, () => {
-    console.log(`Listening to ${hostname}/${port}`)
+    console.log(`Listening to http://${hostname}/${port}`)
 });
 
 export default app;
