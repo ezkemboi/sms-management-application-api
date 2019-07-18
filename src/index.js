@@ -31,26 +31,7 @@ app.get('/', (req, res) => {
  * Name, phone number
  */
 
-app.get('/contacts', async (req, res) => {
-    // Selecting user's contacts from table contacts
-    const data = 'SELECT * FROM contacts';
-    try {
-        const { rows, rowCount } = await db.query(data);
-        if (rows.length < 1 || rowCount < 1) {
-            return res.status(404).send({
-                "message": "There are no contacts that exist at the moment"
-            });
-        }
-        return res.status(200).send({
-            "message": "Contacts retrieved successfully.",
-            "contacts": rows,
-            "totalCount": rowCount
-        });
-    } catch (err) {
-        return res.status(400).send(err)
-    }
-});
-
+// Add contact in the list
 app.post('/contacts', async (req, res) => {
     const { name, phoneNumber } = req.body;
     // Validate user
@@ -76,6 +57,40 @@ app.post('/contacts', async (req, res) => {
     }
 });
 
+// Get all contacts
+app.get('/contacts', async (req, res) => {
+    // Selecting user's contacts from table contacts
+    const data = 'SELECT * FROM contacts';
+    try {
+        const { rows, rowCount } = await db.query(data);
+        if (rows.length < 1 || rowCount < 1) {
+            return res.status(404).send({
+                "message": "There are no contacts that exist at the moment"
+            });
+        }
+        return res.status(200).send({
+            "message": "Contacts retrieved successfully.",
+            "contacts": rows,
+            "totalCount": rowCount
+        });
+    } catch (err) {
+        return res.status(400).send(err)
+    }
+});
+
+// Delete contacts from my list
+app.delete('/contacts/:id', async (req, res) => {
+    const data = `DELETE FROM contacts WHERE id=${req.params.id}`;
+    try {
+        const deleteContact = await db.query(data);
+        return res.status(200).send({
+            "message": "Deleted contacts and sms related to them successfully"
+        })
+    } catch (err) {
+        return res.status(400).json(err)
+    }
+});
+
 /**
  * Sms endpoints
  * person sending sms
@@ -83,6 +98,30 @@ app.post('/contacts', async (req, res) => {
  * message of sms
  * sms status
  */
+
+// Send an sms
+app.post('/sms', async (req, res) => {
+    const { senderId, receiverId, message, status } = req.body;
+    if (!senderId || !receiverId || !message || !status) {
+        res.status(400).send({
+            "message": "Sender, receiver, message and status required"
+        });
+    };
+    const data = `INSERT INTO sms(sender_id, receiver_id, message, status, created_date) 
+                    VALUES($1, $2, $3, $4, $5) RETURNING *`
+    // Values to insert into db
+    const values = [senderId, receiverId, message, status, moment(new Date())]
+
+    try {
+        const { rows } = await db.query(data, values);
+        return res.status(201).send({
+            "Message": "Send createad successfully",
+            "sms": rows[0]
+        });
+    } catch (err) {
+        return res.status(400).send(err)
+    }
+});
 
 // Get all messages
 app.get('/sms', async (req, res) => {
@@ -106,32 +145,9 @@ app.get('/sms', async (req, res) => {
     }
 });
 
-app.post('/sms', async (req, res) => {
-    const { sender, receiver, message, status } = req.body;
-    if (!sender || !receiver || !message || !status) {
-        res.status(400).send({
-            "message": "Sender, receiver, message and status required"
-        });
-    };
-    const data = `INSERT INTO sms(sender, receiver, message, status, created_date) 
-                    VALUES($1, $2, $3, $4, $5) RETURNING *`
-    // Values to insert into db
-    const values = [sender, receiver, message, status, moment(new Date())]
-
-    try {
-        const { rows } = await db.query(data, values);
-        return res.status(201).send({
-            "Message": "Send createad successfully",
-            "sms": rows[0]
-        });
-    } catch (err) {
-        return res.status(400).send(err)
-    }
-});
-
-// App listen
+// App running on
 app.listen(port, hostname, () => {
-    console.log(`Listneing to ${hostname}/${port}`)
+    console.log(`Listening to ${hostname}/${port}`)
 });
 
 export default app;

@@ -19,19 +19,6 @@ pool.on('connect', () => {
 
 // Creating tables function
 export const createTables = async () => {
-    const smsTable = `CREATE TABLE IF NOT EXISTS
-        sms(
-            id SERIAL PRIMARY KEY,
-            sender VARCHAR(128) NOT NULL, 
-            receiver VARCHAR(128) NOT NULL, 
-            message VARCHAR(128) NOT NULL,
-            status VARCHAR(128) NOT NULL,
-            created_date TIMESTAMP
-        )
-    `;
-
-    await pool.query(smsTable);
-
     const contactTable = `CREATE TABLE IF NOT EXISTS 
         contacts(
             id SERIAL PRIMARY KEY,
@@ -40,7 +27,21 @@ export const createTables = async () => {
             created_date TIMESTAMP
         )
     `;
+
     await pool.query(contactTable);
+
+    const smsTable = `CREATE TABLE IF NOT EXISTS
+        sms(
+            id SERIAL PRIMARY KEY,
+            sender_id INTEGER REFERENCES contacts(id) ON DELETE CASCADE, 
+            receiver_id INTEGER REFERENCES contacts(id) ON DELETE CASCADE, 
+            message VARCHAR(128) NOT NULL,
+            status VARCHAR(128) NOT NULL,
+            created_date TIMESTAMP
+        )
+    `;
+
+    await pool.query(smsTable);
 };
 
 // Dropping tables already creating

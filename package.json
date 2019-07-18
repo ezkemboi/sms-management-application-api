@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=development nodemon --exec babel-node src/index.js",
     "start:prod": "NODE_ENV=production babel-node src/index.js",
-    "test": "NODE_ENV=test npm run drop && npm run create && nyc --reporter=text mocha --exit --require @babel/register --require @babel/polyfill ./tests/*",
+    "test": "NODE_ENV=test npm run drop && npm run create && nyc --reporter=text mocha --exit --require @babel/register --require @babel/polyfill ./tests/* && npm run drop",
     "create": "babel-node ./src/database/config createTables",
     "drop": "babel-node ./src/database/config dropTables",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
