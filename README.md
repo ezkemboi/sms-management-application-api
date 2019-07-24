@@ -45,5 +45,16 @@ NB: `This app does not use any ORM`
 NB: To drop any tables previous created use `npm run drop`
     To run production version `npm run start:prod`
 
+# Expected Endpoints
+
+|Endpoint                            | Functionality                    |HTTP method 
+|------------------------------------|----------------------------------|-------------
+|/contacts                       |Add a contact                       |POST        
+|/contacts  |Get all contacts   |GET  
+|/contacts/:id             |Delete/remove a contact                   |DELETE
+|/sms                      |Add a sms                       |POST        
+|/sms  |Get all sms   |GET 
+
+
 ## Contributor
 Ezrqn Kemboi
