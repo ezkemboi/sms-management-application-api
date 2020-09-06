@@ -5,12 +5,23 @@ dotenv.config();
 
 const env = process.env.NODE_ENV
 
-const databaseUrl = env === 'test' ? process.env.TEST_DATABASE_URL : process.env.DATABASE_URL;
+let poolDetails = {
+    user: process.env.USER,
+    host: 'localhost',
+    database: process.env.DATABASE,
+    password: process.env.PASSWORD,
+    port: 5432
+}
+
+// change pool details based on env
+if(env === 'test') {
+    poolDetails.database = process.env.TEST_DATABASE
+}
 
 // Creating a new pool instance
-export const pool = new Pool({
-    connectionString: databaseUrl
-});
+export const pool = new Pool(poolDetails);
+
+console.log({ pool })
 
 // Connecting to the database
 pool.on('connect', () => {
